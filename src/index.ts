@@ -15,25 +15,15 @@ app.set('views', path.join(__dirname, 'views')); // ビューのディレクト�
 app.use(express.json()); // 追加：JSON形式のリクエストボディをパースする
 
 
+// ルートパスへのアクセスを /todos にリダイレクト
 app.get('/', (req: Request, res: Response): void => {
-  res.send('Hello World!');
-});
-
-
-app.listen(port, (): void => {
-  console.log(`Example app listening on port ${port}`);
-});
-
-// 動作確認用ルート
-app.get('/', (req: Request, res: Response) => {
-    res.send('TypeScript TODO App Server is Running');
+    res.redirect('/todos');
 });
 
 // ルーティング登録 (/todos パス配下に集約)
 app.use('/todos', todoRoutes);
 
-
-// ルートパスへのアクセスを /todos にリダイレクト
-app.get('/', (req: Request, res: Response) => {
-    res.redirect('/todos');
+// サーバーの起動
+app.listen(port, (): void => {
+    console.log(`Example app listening on port ${port}`);
 });

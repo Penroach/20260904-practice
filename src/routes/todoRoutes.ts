@@ -49,15 +49,15 @@ router.post('/api', async (req: Request, res: Response) => {
 // PUT /todos/api/:id - TODOの更新 (完了フラグ切り替え・タイトル編集)
 router.put('/api/:id', async (req: Request, res: Response) => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(req.params.id as string, 10);
         if (isNaN(id)) {
             res.status(400).json({ message: '不正なIDです。' });
             return;
         }
 
 
-        const { title, completed } = req.body;
-        const updatedTodo = await TodoModel.update(id, { title, completed });
+        const { completed } = req.body;
+        const updatedTodo = await TodoModel.update(id, { completed });
 
 
         if (!updatedTodo) {
@@ -76,7 +76,7 @@ router.put('/api/:id', async (req: Request, res: Response) => {
 // DELETE /todos/api/:id - TODOの削除
 router.delete('/api/:id', async (req: Request, res: Response) => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(req.params.id as string, 10);
         if (isNaN(id)) {
             res.status(400).json({ message: '不正なIDです。' });
             return;
