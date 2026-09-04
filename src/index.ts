@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import fs from 'fs/promises';
 import path from 'path';
-
+import todoRoutes from './routes/todoRoutes';
 
 const app = express();
 const port: number = 3000;
@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true })); // POST通信設定
 app.use(express.static(path.join(__dirname, 'public'))); // 静的ファイルの指定
 app.set('view engine', 'ejs'); // テンプレートエンジンにEJSを設定
 app.set('views', path.join(__dirname, 'views')); // ビューのディレクトリを設定
+app.use(express.json()); // 追加：JSON形式のリクエストボディをパースする
 
 
 app.get('/', (req: Request, res: Response): void => {
@@ -21,4 +22,18 @@ app.get('/', (req: Request, res: Response): void => {
 
 app.listen(port, (): void => {
   console.log(`Example app listening on port ${port}`);
+});
+
+// 動作確認用ルート
+app.get('/', (req: Request, res: Response) => {
+    res.send('TypeScript TODO App Server is Running');
+});
+
+// ルーティング登録 (/todos パス配下に集約)
+app.use('/todos', todoRoutes);
+
+
+// ルートパスへのアクセスを /todos にリダイレクト
+app.get('/', (req: Request, res: Response) => {
+    res.redirect('/todos');
 });
